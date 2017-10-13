@@ -210,81 +210,105 @@ namespace Completed
 				//Disable the player object since level is over.
 				enabled = false;
 			}
-			
-			//Check if the tag of the trigger collided with is Food.
+
+			//Check if the tag of the trigger collided with is Food.衝突したトリガーのタグがFoodかどうかを確認します。
 			else if(other.tag == "Food")
 			{
-				//Add pointsPerFood to the players current food total.
+				//Add pointsPerFood to the players current food total.選手の現在の食べ物の合計にpointsPerFoodを追加します。
 				food += pointsPerFood;
 				
 				//Update foodText to represent current total and notify player that they gained points
+                //foodTextを更新して現在の合計を表し、ポイントを得たことをプレーヤーに通知します
 				foodText.text = "+" + pointsPerFood + " Food: " + food;
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
+                //SoundManagerのRandomizeSfx関数を呼び出し、2つの食べ物の音を渡して、食べるサウンドエフェクトを再生するかどうかを選択します。
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
-				
-				//Disable the food object the player collided with.
+
+				//Disable the food object the player collided with.プレイヤーが衝突した食物を無効にする。
 				other.gameObject.SetActive (false);
 			}
-			
-			//Check if the tag of the trigger collided with is Soda.
+
+			//Check if the tag of the trigger collided with is Soda.衝突したトリガーのタグがソーダかどうかを確認します。
 			else if(other.tag == "Soda")
 			{
-				//Add pointsPerSoda to players food points total
+                Debug.Log("soda");
+				//Add pointsPerSoda to players food points total プレイヤーにポイントを追加する
 				food += pointsPerSoda;
 				
 				//Update foodText to represent current total and notify player that they gained points
+                //foodTextを更新して現在の合計を表し、ポイントを得たことをプレーヤーに通知します
 				foodText.text = "+" + pointsPerSoda + " Food: " + food;
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
+                //SoundManagerのRandomizeSfx関数を呼び出し、2つの飲酒音を渡して飲酒効果を再生するかどうかを選択します
 				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
-				
-				//Disable the soda object the player collided with.
+
+				//Disable the soda object the player collided with. プレーヤーが衝突したソーダオブジェクトを無効にする。
 				other.gameObject.SetActive (false);
 			}
+
+
+            //enemy atack
+			else if (other.tag == "Enemy")
+            {
+                Debug.Log("OnYrigger");
+                Enemy hitEnemy = new Enemy();
+				hitEnemy.EnemyDamagee();
+
+            }
+
+
 		}
-		
-		
-		//Restart reloads the scene when called.
+
+
+		//Restart reloads the scene when called. 再起動すると、呼び出されるとシーンがリロードされます。
 		private void Restart ()
 		{
 			//Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
             //and not load all the scene object in the current scene.
+            //ロードされた最後のシーン、この場合Mainをゲームの唯一のシーンにロードします。 
+            //また、 "Single"モードでロードして、既存のシーンオブジェクトを置き換え、現在のシーン内のすべてのシーンオブジェクトをロードしないようにします。
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
 		}
-		
-		
+
+
 		//LoseFood is called when an enemy attacks the player.
 		//It takes a parameter loss which specifies how many points to lose.
+		//LoseFoodは、敵がプレイヤーを攻撃するときに呼び出されます。
+        //失うポイント数を指定するパラメータの損失が発生します。
 		public void LoseFood (int loss)
 		{
 			//Set the trigger for the player animator to transition to the playerHit animation.
+            //playerHitアニメーションに遷移するように、プレーヤアニメータのトリガを設定します。
 			animator.SetTrigger ("playerHit");
-			
-			//Subtract lost food points from the players total.
+
+			//Subtract lost food points from the players total. プレイヤーの合計から失われた食べ物ポイントを差し引く。
 			food -= loss;
-			
-			//Update the food display with the new total.
+
+			//Update the food display with the new total. フードディスプレイを新しい合計で更新します。
 			foodText.text = "-"+ loss + " Food: " + food;
-			
-			//Check to see if game has ended.
+
+			//Check to see if game has ended. ゲームが終了したかどうかを確認してください。
 			CheckIfGameOver ();
 		}
 		
 		
 		//CheckIfGameOver checks if the player is out of food points and if so, ends the game.
+        //CheckIfGameOverは、プレイヤーが食糧ポイントを使い果たしているかどうかをチェックし、食べ物ポイントがない場合、ゲームを終了します。
 		private void CheckIfGameOver ()
 		{
-			//Check if food point total is less than or equal to zero.
+			//Check if food point total is less than or equal to zero. フードポイント合計がゼロ以下であることを確認します。
 			if (food <= 0) 
 			{
 				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
+                //SoundManagerのPlaySingle関数を呼び出し、再生するオーディオクリップとしてgameOverSoundを渡します。
 				SoundManager.instance.PlaySingle (gameOverSound);
-				
-				//Stop the background music.
+
+				//Stop the background music. バックグラウンドミュージックを停止します。
 				SoundManager.instance.musicSource.Stop();
-				
-				//Call the GameOver function of GameManager.
+
+				//Call the GameOver function of GameManager. GameManagerのGameOver関数を呼び出します。
 				GameManager.instance.GameOver ();
 			}
 		}

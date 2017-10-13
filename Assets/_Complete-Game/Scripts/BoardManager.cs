@@ -24,11 +24,11 @@ namespace Completed
 				maximum = max;
 			}
 		}
-
-        //public int maxint = 5;
-        //public int minint = 5;
+		public int minint = 1;                                          //乱数の最小値
+		public int maxint = 5;                                          //乱数の最大値
+        public int start = 8;                                           //マス目のリセット用
 		public int columns = 8;                                         //ゲームボードの列数
-		public int rows = 8;                                            //の行数。
+		public int rows = 8;                                            //行数
 		public Count wallCount = new Count (5, 9);                      //Lower and upper limit for our random number of walls per level. 1レベルあたりの乱数の乱数の上限と下限。
 		public Count foodCount = new Count (1, 5);                      //Lower and upper limit for our random number of food items per level. 1レベルあたりの食品の乱数の上限と下限。
 		public GameObject exit;                                         //Prefab to spawn for exit.プレハブを実行して終了します。
@@ -141,8 +141,11 @@ namespace Completed
 		//GameManeger.InitGame
 		public void SetupScene (int level)
 		{
-            int maxint = new System.Random().Next(1, 3);
-            columns *= maxint;
+            //面積をランダム
+            //columns = start;
+            //int r = new System.Random().Next(minint, maxint);
+            //columns *= r;
+            //rows *= r;
 
 			//Creates the outer walls and floor.外壁と床を作成します。
 			BoardSetup ();
@@ -164,6 +167,6 @@ namespace Completed
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
-		}
+
 	}
 }

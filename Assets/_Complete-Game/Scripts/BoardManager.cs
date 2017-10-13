@@ -167,6 +167,10 @@ namespace Completed
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
-
+			//exitをランダム
+			//int r1 = new System.Random().Next(8);
+			//int r2 = new System.Random().Next(8);
+			//Instantiate (exit, new Vector3 (r1, r2, 0f), Quaternion.identity);
+		}
 	}
 }

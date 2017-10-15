@@ -68,8 +68,6 @@ namespace Completed
         public void MoveEnemy()
         {
             if (enemyDead) return;
-           
-            Debug.Log(gameObject + "Move Enemy"); 
             //Declare variables for X and Y axis move directions, these range from -1 to 1.
             //These values allow us to choose between the cardinal directions: up, down, left and right.
             //X軸とY軸の移動方向の変数を宣言します。範囲は - 1〜1です。
@@ -127,15 +125,11 @@ namespace Completed
 
         public void DamageEnemy(int loss)
         {
-            //Debug.Log("Enemy.Damage");
             hp -= loss;
             if (hp <= 0)
             {
-                //Debug.Log(GameManager.instance.enemyDead);
-                //gameObject.SetActive(false);
                 Destroy(gameObject);
                 enemyDead = true;
-                //Debug.Log(GameManager.instance.enemyDead);
             }
         }
     }

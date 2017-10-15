@@ -132,13 +132,12 @@ namespace Completed
             //Check if we have a non-zero value for horizontal or vertical
             if (horizontal != 0 || vertical != 0)
             {
-                Debug.Log("Player Update");
                 //Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
                 //Pass in horizontal and vertical as parameters to specify the direction to move Player in.
                 //AttemptMoveはジェネリックパラメータWallを渡します。これはPlayerが攻撃を受けたときに対話することができるためです（
                 //水平方向と垂直方向のパラメータを渡してPlayerを移動する方向を指定します）
-                AttemptMove<Wall>(horizontal, vertical);
-                AttemptMove<Enemy>(horizontal, vertical);
+                //AttemptMove<Wall>(horizontal, vertical);
+                AttemptMove<MonoBehaviour>(horizontal, vertical);
             }
         }
 
@@ -147,7 +146,6 @@ namespace Completed
         //AttemptMoveは、基底クラスのAttemptMove関数をオーバーライドします。MovingObject AttemptMoveは、PlayerがWall型のジェネリックパラメータTをとります.x方向とy方向の整数も移動します。
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
-            Debug.Log("food");
             //Every time player moves, subtract from food points total.プレイヤーが移動するたびに、合計食糧ポイントを引く。
             food--;
 
@@ -188,7 +186,6 @@ namespace Completed
         //MovingObject.AttemptMove でhitしたcomponentを取得
         protected override void OnCantMove<T>(T component)
         {
-            //Debug.Log(component.tag + " tag");
             if (component.tag == "Wall")
             {
                 //引数のcomponentをhitWallに代入
@@ -203,7 +200,6 @@ namespace Completed
             }
             else if (component.tag == "Enemy")
             {
-                //Debug.Log("Enemy");
                 //引数のcomponentをhitEnemyに代入
                 Enemy hitEnemy = component as Enemy;
 
@@ -212,7 +208,7 @@ namespace Completed
 
                 //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
                 //プレイヤーの攻撃アニメーションを再生するために、プレイヤーのアニメーションコントローラーの攻撃トリガーを設定します。
-                //animator.SetTrigger("playerChop");
+                animator.SetTrigger("playerChop");
             }
         }
 

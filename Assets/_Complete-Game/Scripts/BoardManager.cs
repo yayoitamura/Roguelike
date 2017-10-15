@@ -99,38 +99,48 @@ namespace Completed
 
 
         //RandomPosition returns a random position from our list gridPositions.
+        //RandomPositionは、リストgridPositionsからランダムな位置を返します。
         Vector3 RandomPosition()
         {
             //Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
+            //整数randomIndexを宣言し、リストのgridPositions内のアイテムの数と0の間の乱数に値を設定します。
             int randomIndex = Random.Range(0, gridPositions.Count);
 
             //Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from our List gridPositions.
+            //randomPositionというVector3型の変数を宣言し、ListのgridPositionsからrandomIndexのエントリにその値を設定します。
             Vector3 randomPosition = gridPositions[randomIndex];
 
             //Remove the entry at randomIndex from the list so that it can't be re-used.
+            //randomIndexのエントリをリストから削除して、再利用できないようにします。
             gridPositions.RemoveAt(randomIndex);
 
-            //Return the randomly selected Vector3 position.
+            //Return the randomly selected Vector3 position.ランダムに選択されたVector3の位置を返します。
             return randomPosition;
         }
 
 
         //LayoutObjectAtRandom accepts an array of game objects to choose from along with a minimum and maximum range for the number of objects to create.
+        //LayoutObjectAtRandomは、作成するオブジェクトの数の最小範囲と最大範囲から選択するゲームオブジェクトの配列を受け入れます。
         void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
         {
             //Choose a random number of objects to instantiate within the minimum and maximum limits
+            //最小値と最大値の範囲内でインスタンス化するオブジェクトの乱数を選択する
             int objectCount = Random.Range(minimum, maximum + 1);
 
             //Instantiate objects until the randomly chosen limit objectCount is reached
+            //無作為に選択されたlimitCountに達するまでオブジェクトをインスタンス化する
             for (int i = 0; i < objectCount; i++)
             {
                 //Choose a position for randomPosition by getting a random position from our list of available Vector3s stored in gridPosition
+                //gridPositionに格納されている利用可能なVector3のリストからランダムな位置を取得して、randomPositionの位置を選択します
                 Vector3 randomPosition = RandomPosition();
 
                 //Choose a random tile from tileArray and assign it to tileChoice
+                //tileArrayからランダムなタイルを選択してtileChoiceに割り当てます
                 GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
 
                 //Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
+                //ローテーションを変更せずにRandomPositionから返された位置でtileChoiceをインスタンス化します。
                 Instantiate(tileChoice, randomPosition, Quaternion.identity);
             }
         }
@@ -142,39 +152,44 @@ namespace Completed
         public void SetupScene(int level)
         {
             //面積をランダム
-            columns = start;
-            rows = start;
-            int r = new System.Random().Next(minint, maxint);
-            columns *= r;
-            rows *= r;
-            Debug.Log(columns + " ＊ " + rows);
+            //columns = start;
+            //rows = start;
+            //int r = new System.Random().Next(minint, maxint);
+            //columns *= r;
+            //rows *= r;
+            //Debug.Log(columns + " ＊ " + rows);
 
             //Creates the outer walls and floor.外壁と床を作成します。
             BoardSetup();
 
-            //Reset our list of gridpositions.
+            //Reset our list of gridpositions.私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
 
             //Instantiate a random number of wall tiles based on minimum and maximum, at randomized positions.
+            //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
 
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
+            //無作為化された位置で最小値と最大値に基づいて無作為数の食品タイルをインスタンス化します。
             LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
 
             //Determine number of enemies based on current level number, based on a logarithmic progression
+            //対数プログレッションに基づいて、現在のレベル番号に基づいて敵の数を決定する
             int enemyCount = (int)Mathf.Log(level, 2f);
 
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
+            //無作為の位置で最小値と最大値に基づいてランダムな数の敵をインスタンス化します。
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+            Debug.Log(LayoutObjectAtRandom);
 
             //Instantiate the exit tile in the upper right hand corner of our game board
+            //ゲームボードの右上に出口タイルをインスタンシエートする
             //Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
             //exitをランダム　Quaternion.identity->回転なし
-            int r1 = new System.Random().Next(8);
-            int r2 = new System.Random().Next(8);
+            int r1 = new System.Random().Next(1,8);
+            int r2 = new System.Random().Next(18);
             Instantiate(exit, new Vector3(r1, r2, 0f), Quaternion.identity);
 
-            //Playerとかぶった時の処理   
         }
     }
 }

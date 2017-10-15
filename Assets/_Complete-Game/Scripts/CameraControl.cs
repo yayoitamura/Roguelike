@@ -19,7 +19,7 @@ namespace Completed
 
         void Update()
         {
-            transform.position = new Vector3(player.transform.position.x, y, z);
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, z);
         }
 
     }

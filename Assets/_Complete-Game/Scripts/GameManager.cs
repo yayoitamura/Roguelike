@@ -10,6 +10,8 @@ namespace Completed
     //GameManager
     public class GameManager : MonoBehaviour
     {
+        
+
         public float levelStartDelay = 2f;                      //レベル開始前の待機時間
         public float turnDelay = 0.1f;                          //Delay between each Player turn.各プレイヤーのターンの間のディレイ。
         public int playerFoodPoints = 5;                      //プレーヤのゲーム開始時のfood points
@@ -26,10 +28,7 @@ namespace Completed
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.移動コマンドを発行するために使用されるすべての敵ユニットのリスト。
         private bool enemiesMoving;                             //敵が動いているかどうか
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
-                                                                //ボードをセットアップしているかどうかを確認するブール値。セットアップ中にPlayerが移動しないようにします。
-
-
-
+                                                                //ボードをセットアップしているかどうかを確認するブール値。セットアップ中にPlayerが移動しないようにします
         //
         void Awake()
         {
@@ -127,12 +126,16 @@ namespace Completed
         {
             //Check that playersTurn or enemiesMoving or doingSetup are not currently true.プレイヤーがターンまたは敵であることを確認してください。
             if (playersTurn || enemiesMoving || doingSetup)
-
+            {
+                //Debug.Log("player  " + playersTurn);
+                //Debug.Log("enemies " + enemiesMoving);
+                //Debug.Log("doin " + doingSetup);
                 //If any of these are true, return and do not start MoveEnemies.これらのいずれかが当てはまる場合、戻って、MoveEnemiesを開始しないでください。
                 return;
+            }
 
             //Start moving enemies.
-            StartCoroutine(MoveEnemies());
+            StartCoroutine("MoveEnemies");
         }
 
         //Call this to add the passed in Enemy to the List of Enemy objects.
@@ -189,6 +192,7 @@ namespace Completed
 
             //Enemies are done moving, set enemiesMoving to false. 敵は動かされ、敵は偽に変わる。
             enemiesMoving = false;
+
         }
     }
 }

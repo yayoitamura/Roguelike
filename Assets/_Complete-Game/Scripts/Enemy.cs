@@ -7,15 +7,15 @@ namespace Completed
     //MovingObjectから継承
     public class Enemy : MovingObject
     {
+        public bool enemyDead = false;
         public int playerDamage;                            //Playerへのダメージ
         public AudioClip attackSound1;                      //Playeを攻撃する時のオーディオクリッップ１
         public AudioClip attackSound2;                      //Playeを攻撃する時のオーディオクリッップ２
-
+        public int hp = 3;
 
         private Animator animator;                          //Animatorコンポーネントへの参照を格納
         private Transform target;                           //Transform to attempt to move toward each turn.各ターンに向かって移動しようとするために変形する。
         private bool skipMove;                              //Boolean to determine whether or not enemy should skip a turn or move this turn.敵がターンをスキップするか、このターンを移動するかどうかを決定するブール値。
-
 
         //MovingObjectのStart関数に上乗せ（継承元と同じ（引数の型・数の）メソッドを自分のクラス独自のもので置き換えられる）
         protected override void Start()
@@ -67,6 +67,9 @@ namespace Completed
         //MoveEnemyは各ターンにGameMangerから呼び出され、各敵にプレイヤーに向かって移動しようとします。
         public void MoveEnemy()
         {
+            if (enemyDead) return;
+           
+            Debug.Log(gameObject + "Move Enemy"); 
             //Declare variables for X and Y axis move directions, these range from -1 to 1.
             //These values allow us to choose between the cardinal directions: up, down, left and right.
             //X軸とY軸の移動方向の変数を宣言します。範囲は - 1〜1です。
@@ -122,23 +125,18 @@ namespace Completed
             SoundManager.instance.RandomizeSfx(attackSound1, attackSound2);
         }
 
-        public void EnemyDamagee()
+        public void DamageEnemy(int loss)
         {
-            Debug.Log("Enemy.Damage");
-            //SoundManagerのRandomizeSfx関数に二つのオーディオを渡す
-            //SoundManager.instance.RandomizeSfx(chopSound1, chopSound2);
-
-            //スプライトレンダラーを破損したウォールスプライトに設定します。
-            //spriteRenderer.sprite = dmgSprite;
-
-            //hp -= loss;
-
-            ////hpが0以下
-            //if (hp <= 0)
-            ////SetActive(false)でgameObjectを無効(非アクティブ)
-            //gameObject.SetActive(false);
-            //}
-            gameObject.SetActive(false);
+            //Debug.Log("Enemy.Damage");
+            hp -= loss;
+            if (hp <= 0)
+            {
+                //Debug.Log(GameManager.instance.enemyDead);
+                //gameObject.SetActive(false);
+                Destroy(gameObject);
+                enemyDead = true;
+                //Debug.Log(GameManager.instance.enemyDead);
+            }
         }
     }
 }

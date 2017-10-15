@@ -132,11 +132,13 @@ namespace Completed
             //Check if we have a non-zero value for horizontal or vertical
             if (horizontal != 0 || vertical != 0)
             {
+                Debug.Log("Player Update");
                 //Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
                 //Pass in horizontal and vertical as parameters to specify the direction to move Player in.
                 //AttemptMoveはジェネリックパラメータWallを渡します。これはPlayerが攻撃を受けたときに対話することができるためです（
                 //水平方向と垂直方向のパラメータを渡してPlayerを移動する方向を指定します）
                 AttemptMove<Wall>(horizontal, vertical);
+                AttemptMove<Enemy>(horizontal, vertical);
             }
         }
 
@@ -145,6 +147,7 @@ namespace Completed
         //AttemptMoveは、基底クラスのAttemptMove関数をオーバーライドします。MovingObject AttemptMoveは、PlayerがWall型のジェネリックパラメータTをとります.x方向とy方向の整数も移動します。
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
+            Debug.Log("food");
             //Every time player moves, subtract from food points total.プレイヤーが移動するたびに、合計食糧ポイントを引く。
             food--;
 
@@ -182,17 +185,35 @@ namespace Completed
         //It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
         //OnCantMoveは、MovingObjectのOnCantMoveという抽象関数をオーバーライドします。 
         //それはプレーヤーが攻撃で破壊することができる壁である場合、一般的なパラメータTをとります。
+        //MovingObject.AttemptMove でhitしたcomponentを取得
         protected override void OnCantMove<T>(T component)
         {
-            //Set hitWall to equal the component passed in as a parameter.パラメーターとして渡されたコンポーネントと等しくなるようにhitWallを設定します。
-            Wall hitWall = component as Wall;
+            //Debug.Log(component.tag + " tag");
+            if (component.tag == "Wall")
+            {
+                //引数のcomponentをhitWallに代入
+                Wall hitWall = component as Wall;
 
-            //Call the DamageWall function of the Wall we are hitting.私たちが襲っている壁のDamageWall機能を呼び出します。
-            hitWall.DamageWall(wallDamage);
+                //Call the DamageWall function of the Wall we are hitting.私たちが襲っている壁のDamageWall機能を呼び出します。
+                hitWall.DamageWall(wallDamage);
 
-            //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-            //プレイヤーの攻撃アニメーションを再生するために、プレイヤーのアニメーションコントローラーの攻撃トリガーを設定します。
-            animator.SetTrigger("playerChop");
+                //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
+                //プレイヤーの攻撃アニメーションを再生するために、プレイヤーのアニメーションコントローラーの攻撃トリガーを設定します。
+                animator.SetTrigger("playerChop");
+            }
+            else if (component.tag == "Enemy")
+            {
+                //Debug.Log("Enemy");
+                //引数のcomponentをhitEnemyに代入
+                Enemy hitEnemy = component as Enemy;
+
+                //DamageEnemy機能を呼び出します。
+                hitEnemy.DamageEnemy(wallDamage);
+
+                //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
+                //プレイヤーの攻撃アニメーションを再生するために、プレイヤーのアニメーションコントローラーの攻撃トリガーを設定します。
+                //animator.SetTrigger("playerChop");
+            }
         }
 
 
@@ -232,7 +253,6 @@ namespace Completed
             //Check if the tag of the trigger collided with is Soda.衝突したトリガーのタグがソーダかどうかを確認します。
             else if (other.tag == "Soda")
             {
-                Debug.Log("soda");
                 //Add pointsPerSoda to players food points total プレイヤーにポイントを追加する
                 food += pointsPerSoda;
 
@@ -247,18 +267,6 @@ namespace Completed
                 //Disable the soda object the player collided with. プレーヤーが衝突したソーダオブジェクトを無効にする。
                 other.gameObject.SetActive(false);
             }
-
-
-            //enemy atack
-            else if (other.tag == "Soda")
-            {
-                Debug.Log("ooooo");
-                Enemy hitEnemy = new Enemy();
-                hitEnemy.EnemyDamagee();
-
-            }
-
-
         }
 
 

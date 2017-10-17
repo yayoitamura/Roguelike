@@ -26,20 +26,22 @@ namespace Completed
         }
         public int minint = 1;                                          //乱数の最小値
         public int maxint = 5;                                          //乱数の最大値
-        public Count wallCount = new Count(5, 9);                      //Lower and upper limit for our random number of walls per level. 1レベルあたりの乱数の乱数の上限と下限。
-        public Count foodCount = new Count(1, 5);                      //Lower and upper limit for our random number of food items per level. 1レベルあたりの食品の乱数の上限と下限。
+        public Count wallCount = new Count(5, 9);                       //Lower and upper limit for our random number of walls per level. 1レベルあたりの乱数の乱数の上限と下限。
+        public Count foodCount = new Count(1, 5);                       //Lower and upper limit for our random number of food items per level. 1レベルあたりの食品の乱数の上限と下限。
         public GameObject exit;                                         //Prefab to spawn for exit.プレハブを実行して終了します。
         public GameObject[] floorTiles;                                 //床プレハブの配列。
         public GameObject[] wallTiles;                                  //壁プレハブの配列。
         public GameObject[] foodTiles;                                  //foodプレハブの配列。
-        public GameObject[] enemyTiles;                                 //enemyプレハブの配列。
+        public GameObject[] enemyTiles;                                 //enemyEXプレハブ。
+        public GameObject[] enemyExTiles;                                  //Bossプレハブ
+        public GameObject[] bossTiles;                                     //プレハブの配列。
         public GameObject[] outerWallTiles;                             //Array of outer tile prefabs. 外側のタイルプレアブの配列。
 
-        private int start = 8;                                           //マス目のリセット用
-        private int columns = 8;                                         //ゲームボードの列数
-        private int rows = 8;                                            //行数
+        private int start = 8;                                          //マス目のリセット用
+        private int columns = 8;                                        //ゲームボードの列数
+        private int rows = 8;                                           //行数
         private Transform boardHolder;                                  //A variable to store a reference to the transform of our Board object. Boardオブジェクトの変換への参照を格納する変数。
-        private List<Vector3> gridPositions = new List<Vector3>();   //A list of possible locations to place tiles. タイルを配置する可能性のある場所のリスト。
+        private List<Vector3> gridPositions = new List<Vector3>();      //A list of possible locations to place tiles. タイルを配置する可能性のある場所のリスト。
 
 
         //Clears our list gridPositions and prepares it to generate a new board.リストgridPositionsをクリアし、新しいボードを生成する準備をします。
@@ -180,16 +182,20 @@ namespace Completed
             //Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
             //無作為の位置で最小値と最大値に基づいてランダムな数の敵をインスタンス化します。
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
-            Debug.Log(LayoutObjectAtRandom);
 
             //Instantiate the exit tile in the upper right hand corner of our game board
             //ゲームボードの右上に出口タイルをインスタンシエートする
             //Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
             //exitをランダム　Quaternion.identity->回転なし
             int r1 = new System.Random().Next(1,8);
-            int r2 = new System.Random().Next(18);
+            int r2 = new System.Random().Next(1,8);
             Instantiate(exit, new Vector3(r1, r2, 0f), Quaternion.identity);
+            //RandomPosition()を使えば他のオブジェクトと被らず設置できる？
 
+            if (GameManager.instance.level % 10 == 0)
+            {
+                LayoutObjectAtRandom(bossTiles, 1, 2);
+            }
         }
     }
 }

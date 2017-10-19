@@ -28,7 +28,7 @@ namespace Completed
         public int maxint = 5;                                          //乱数の最大値
         public Count wallCount = new Count(5, 9);                       //1レベルあたりの乱数の乱数の上限と下限。
         public Count foodCount = new Count(1, 5);                       //1レベルあたりの食品の乱数の上限と下限。
-        public GameObject exit;                                         //exitプレハブ
+        public GameObject[] exit;                                       //exitプレハブ
         public GameObject[] floorTiles;                                 //床プレハブの配列。
         public GameObject[] wallTiles;                                  //壁プレハブの配列。
         public GameObject[] foodTiles;                                  //foodプレハブの配列。
@@ -158,6 +158,8 @@ namespace Completed
             //私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
 
+            LayoutObjectAtRandom(exit, 1, 1);
+
             //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
 
@@ -171,12 +173,6 @@ namespace Completed
             //無作為の位置で最小値と最大値に基づいてランダムな数の敵をインスタンス化します。
             LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
 
-            //exitをランダム　Quaternion.identity->回転なし
-            int r1 = new System.Random().Next(1,columns);
-            int r2 = new System.Random().Next(1,rows);
-            Instantiate(exit, new Vector3(r1, r2, 0f), Quaternion.identity);
-            //RandomPosition()を使えば他のオブジェクトと被らず設置できる？
-
             if(GameManager.instance.level % 5 == 0)
             {
                 LayoutObjectAtRandom(enemyExTiles, 1, 3);
@@ -187,6 +183,5 @@ namespace Completed
             }
 
         }
-
     }
 }

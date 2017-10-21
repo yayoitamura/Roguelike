@@ -14,6 +14,7 @@ namespace Completed
         public int pointsPerSoda = 20;              //Sodaから得るポイント
         public int wallDamage = 1;                  //プレイヤーが壁に与えるダメージ。
         public Text foodText;                       //UI Text to display current player food total.
+        public Text PointText;
         public AudioClip moveSound1;                //Playerが動く時のAudio clips１
         public AudioClip moveSound2;                //Playerが動く時のAudio clips２
         public AudioClip eatSound1;                 //food収集時のAudio clips１
@@ -24,6 +25,7 @@ namespace Completed
 
         private Animator animator;                  //animator componentを取得
         private int food;                           //foodの合計point
+        private int experiencePoint;
 
         //プリプロセッサ ディレクティブ
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -36,13 +38,15 @@ namespace Completed
         protected override void Start()
         {
             //animatorの取得
-            animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();;
 
             //レベル間でGameManager.instanceに保存されている現在の食品ポイント合計を取得します。
             food = GameManager.instance.playerFoodPoints;
+            experiencePoint = GameManager.instance.playerExperiencePoint;
 
             //現在のプレーヤーの食べ物の合計を反映するように食物テキストを設定します。
             foodText.text = "Food: " + food;
+            PointText.text = "Point: " + experiencePoint;
 
             //MovingObject基本クラスのStart関数を呼び出します。
             base.Start();
@@ -54,6 +58,8 @@ namespace Completed
         {
             //Playerオブジェクトが無効になっているときは、現在のローカルフードの合計をGameManagerに格納して、次のレベルに再ロードすることができます。
             GameManager.instance.playerFoodPoints = food;
+            GameManager.instance.playerExperiencePoint = experiencePoint;
+            //Debug.Log("OnDisable " + GameManager.instance.playerExperiencePoint);
         }
 
 
@@ -278,9 +284,18 @@ namespace Completed
                 SoundManager.instance.musicSource.Stop();
 
                 //GameManagerのGameOver関数を呼び出します。
-                GameManager.instance.GameOver();
+                GameManager.instance.GameOver();        
             }
         }
+
+        public void ExperiencePoint(int ex) 
+        {
+            Debug.Log("experiencepoint xx  " + experiencePoint);
+            experiencePoint += ex;
+            PointText.text = "Point: " + experiencePoint;
+            Debug.Log("experiencepoint " + experiencePoint);
+        }
+
     }
 }
 

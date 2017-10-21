@@ -14,16 +14,17 @@ namespace Completed
 
         public float levelStartDelay = 2f;                      //レベル開始前の待機時間
         public float turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
-        public int playerFoodPoints = 5;                        //プレーヤのゲーム開始時のfood points
-        public static GameManager instance = null;              //他のスクリプトがアクセスできるようにするGameManagerの静的インスタンス。
-                                                                //他のスクリプトがアクセスできるようにするGameManagerの静的インスタンス。
+        public int playerFoodPoints = 1000;                     //プレーヤのゲーム開始時のfood points
+        public int playerExperiencePoint = 0;
+        public static GameManager instance = null;              //他のスクリプトがアクセスできるようにするGameManagerの静的インスタンス。                                                                
+
         [HideInInspector] public bool playersTurn = true;       //プレイヤーのターンかどうか、インスペクターではなくパブリックになっているかを調べます。
 
 
         private Text levelText;                                 //現在のレベル番号を表示するテキスト。
         private GameObject levelImage;                          //レベルが設定されているのでレベルをブロックする画像、levelTextの背景。
         private BoardManager boardScript;                       //レベルを設定するBoardManagerへの参照を保存する
-        [System.NonSerialized] public int level = 1;            //現在のレベル番号　ゲーム中では「Day ○」
+        [System.NonSerialized] public int level = 1;            //現在のレベル番号
         private List<Enemy> enemies;                            //移動コマンドを発行するために使用されるすべての敵ユニットのリスト。
         private bool enemiesMoving;                             //敵が動いているかどうか
         private bool doingSetup = true;                         //ボードをセットアップしているかどうかを確認するブール値。セットアップ中にPlayerが移動しないようにします

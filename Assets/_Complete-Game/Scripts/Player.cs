@@ -43,7 +43,7 @@ namespace Completed
             //レベル間でGameManager.instanceに保存されている現在の食品ポイント合計を取得します。
             food = GameManager.instance.playerFoodPoints;
             experiencePoint = GameManager.instance.playerExperiencePoint;
-
+            Debug.Log(experiencePoint);
             //現在のプレーヤーの食べ物の合計を反映するように食物テキストを設定します。
             foodText.text = "Food: " + food;
             PointText.text = "Point: " + experiencePoint;

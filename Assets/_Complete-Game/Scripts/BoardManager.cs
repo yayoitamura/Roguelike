@@ -146,11 +146,11 @@ namespace Completed
         public void SetupScene(int level)
         {
             //面積をランダム
-            //columns = start;
-            //rows = start;
-            //int r = new System.Random().Next(minint, maxint);
-            //columns *= r;
-            //rows *= r;
+            columns = start;
+            rows = start;
+            int r = new System.Random().Next(minint, maxint);
+            columns *= r;
+            rows *= r;
 
             //外壁と床を作成
             BoardSetup();

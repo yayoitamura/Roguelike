@@ -12,11 +12,11 @@ namespace Completed
         public AudioClip attackSound2;                      //Playeを攻撃する時のオーディオクリッップ２
         public int hp;
         public bool enemyDead = false;
+        public int experiencePoint;
 
         private Animator animator;                          //Animatorコンポーネントへの参照を格納
         private Transform target;                           //各ターンに向かって移動しようとするために変形する。
         private bool skipMove;                              //敵がターンをスキップするか、このターンを移動するかどうかを決定するブール値。
-        private int experiencePoint = 10;
 
         //MovingObjectのStart関数に上乗せ（継承元と同じ（引数の型・数の）メソッドを自分のクラス独自のもので置き換えられる）
         protected override void Start()
@@ -114,5 +114,6 @@ namespace Completed
 
             }
         }
+
     }
 }

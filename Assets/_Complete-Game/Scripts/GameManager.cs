@@ -17,7 +17,7 @@ namespace Completed
         public int playerFoodPoints = 1000;                     //プレーヤのゲーム開始時のfood points
         public int playerExperiencePoint = 0;
         public int playerLevel = 1;
-        public int playerProtection = 1;
+        public int playerProtection = 0;
         public static GameManager instance = null;              //他のスクリプトがアクセスできるようにするGameManagerの静的インスタンス。                                                                
 
         [HideInInspector] public bool playersTurn = true;       //プレイヤーのターンかどうか、インスペクターではなくパブリックになっているかを調べます。

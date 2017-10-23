@@ -28,6 +28,7 @@ namespace Completed
         private int experiencePoint;
         private int playerLevel;
         private int protection;
+        private int levelUpPoint = 31;
 
         //プリプロセッサ ディレクティブ
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -296,10 +297,9 @@ namespace Completed
 
         public void ExperiencePoint(int ex) 
         {
-            //Debug.Log("experiencepoint xx  " + experiencePoint);
             experiencePoint += ex;
             playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
-            if(11 < experiencePoint)
+            if(levelUpPoint < experiencePoint)
             {
                 LevelUp();
             }
@@ -308,7 +308,10 @@ namespace Completed
         void LevelUp()
         {
             playerLevel++;
+            experiencePoint = (experiencePoint - levelUpPoint);
             protection = (int)Mathf.Log(playerLevel, 2f);
+
+            playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
             playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
         }
 

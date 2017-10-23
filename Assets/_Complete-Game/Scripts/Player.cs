@@ -14,7 +14,7 @@ namespace Completed
         public int pointsPerSoda = 20;              //Sodaから得るポイント
         public int wallDamage = 1;                  //プレイヤーが壁に与えるダメージ。
         public Text foodText;                       //UI Text to display current player food total.
-        public Text levelText;
+        public Text playerLevelText;
         public AudioClip moveSound1;                //Playerが動く時のAudio clips１
         public AudioClip moveSound2;                //Playerが動く時のAudio clips２
         public AudioClip eatSound1;                 //food収集時のAudio clips１
@@ -50,7 +50,7 @@ namespace Completed
 
             //現在のプレーヤーの食べ物の合計を反映するように食物テキストを設定します。
             foodText.text = "Food: " + food;
-            levelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
+            playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
 
             //MovingObject基本クラスのStart関数を呼び出します。
             base.Start();
@@ -267,7 +267,7 @@ namespace Completed
             animator.SetTrigger("playerHit");
 
             //プレイヤーの合計から失われた食べ物ポイントを差し引く。
-            food -= loss;
+            food -= (loss - protection);
 
             //フードディスプレイを新しい合計で更新します。
             foodText.text = "-" + loss + " Food: " + food;
@@ -298,20 +298,18 @@ namespace Completed
         {
             //Debug.Log("experiencepoint xx  " + experiencePoint);
             experiencePoint += ex;
-            levelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
+            playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
             if(11 < experiencePoint)
             {
-                levelUp();
+                LevelUp();
             }
         }
 
-        void levelUp()
+        void LevelUp()
         {
             playerLevel++;
-            int p = (int)Mathf.Log(playerLevel, 2f);
-            Debug.Log(p);
-            protection *= p;
-            levelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
+            protection = (int)Mathf.Log(playerLevel, 2f);
+            playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
         }
 
 

@@ -30,7 +30,7 @@ namespace Completed
         private List<Enemy> enemies;                            //移動コマンドを発行するために使用されるすべての敵ユニットのリスト。
         private bool enemiesMoving;                             //敵が動いているかどうか
         private bool doingSetup = true;                         //ボードをセットアップしているかどうかを確認するブール値。セットアップ中にPlayerが移動しないようにします
-
+        private GameObject continueButton;
         //
         void Awake()
         {
@@ -48,6 +48,10 @@ namespace Completed
 
             //scene切り替え時にobjectが破棄されない(シーンが切り替わっても設定が継続）
             DontDestroyOnLoad(gameObject);
+
+            //continueButtonの取得と非表示
+            continueButton = GameObject.Find("ContinueButton");
+            continueButton.SetActive(false);
 
             //敵を新しい敵のリストオブジェクトに割り当てます。
             enemies = new List<Enemy>();
@@ -146,9 +150,11 @@ namespace Completed
 
             //黒の背景画像gameObjectを有効にする。
             levelImage.SetActive(true);
+            continueButton.SetActive(true);
 
-            //Disable this GameManager.このGameManagerを無効にする
+            //Disable this GameManager.このGameManager無効にする
             enabled = false;
+
         }
 
         //コルーチンは順番に敵を動かす。

@@ -14,10 +14,12 @@ namespace Completed
 
         public float levelStartDelay = 2f;                      //レベル開始前の待機時間
         public float turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
-        public int playerFoodPoints = 1000;                     //プレーヤのゲーム開始時のfood points
+        public int playerFoodPoints = 20;                     //プレーヤのゲーム開始時のfood points
         public int playerExperiencePoint = 0;
         public int playerLevel = 1;
         public int playerProtection = 0;
+        public GameObject continueButton;
+
         public static GameManager instance = null;              //他のスクリプトがアクセスできるようにするGameManagerの静的インスタンス。                                                                
 
         [HideInInspector] public bool playersTurn = true;       //プレイヤーのターンかどうか、インスペクターではなくパブリックになっているかを調べます。
@@ -30,7 +32,7 @@ namespace Completed
         private List<Enemy> enemies;                            //移動コマンドを発行するために使用されるすべての敵ユニットのリスト。
         private bool enemiesMoving;                             //敵が動いているかどうか
         private bool doingSetup = true;                         //ボードをセットアップしているかどうかを確認するブール値。セットアップ中にPlayerが移動しないようにします
-        private GameObject continueButton;
+        private bool isContinue = false;
         //
         void Awake()
         {
@@ -49,9 +51,7 @@ namespace Completed
             //scene切り替え時にobjectが破棄されない(シーンが切り替わっても設定が継続）
             DontDestroyOnLoad(gameObject);
 
-            //continueButtonの取得と非表示
-            continueButton = GameObject.Find("ContinueButton");
-            continueButton.SetActive(false);
+
 
             //敵を新しい敵のリストオブジェクトに割り当てます。
             enemies = new List<Enemy>();
@@ -74,12 +74,35 @@ namespace Completed
         }
 
         //これはシーンがロードされるたびに呼び出されます。
-        static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        static private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            instance.level++;
+            if (scene.name == "_Complete-Game")
+            {
+                Debug.Log(instance.level + " scene loaded");
+
+                instance.level++;
+                //instance.InitGame();
+            }
+            if (instance.isContinue)
+            {
+                Debug.Log(instance.isContinue);
+
+                instance.level = 1;
+                instance.levelStartDelay = 2f;                      //レベル開始前の待機時間
+                instance.turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
+                instance.playerFoodPoints = 20;                     //プレーヤのゲーム開始時のfood points
+                instance.playerExperiencePoint = 0;
+                instance.playerLevel = 1;
+                instance.playerProtection = 0;
+                instance.isContinue = false;
+                instance.playersTurn = true;
+                instance.enemiesMoving = false;
+
+                //Debug.Log(instance.doingSetup);
+            }
+
             instance.InitGame();
         }
-
 
         //各レベルのゲームを初期化します。
         void InitGame()
@@ -92,6 +115,9 @@ namespace Completed
 
             //LevelTextのテキストコンポーネントへの参照を、名前で検索してGetComponentを呼び出すことで取得します。
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
+
+            //continueButtonの取得と非表示
+            continueButton = GameObject.Find("ContinueButton");
 
             //levelTextのテキストを文字列「Day」に設定し、現在のレベル番号を追加します。
             levelText.text = "Day " + level;
@@ -123,6 +149,9 @@ namespace Completed
 
         void Update()
         {
+            //Debug.Log("playersTurn " + playersTurn);
+            //Debug.Log("enemiesMoving " + enemiesMoving);
+            //Debug.Log("doingSetup " + doingSetup);
             //プレイヤーがターンまたは敵であることを確認してください。
             if (playersTurn || enemiesMoving || doingSetup)
             {
@@ -150,11 +179,33 @@ namespace Completed
 
             //黒の背景画像gameObjectを有効にする。
             levelImage.SetActive(true);
-            continueButton.SetActive(true);
 
             //Disable this GameManager.このGameManager無効にする
             enabled = false;
 
+            isContinue = true;
+            continueButton.transform.localScale += new Vector3(1, 1, 1);
+
+            //Application.LoadLevel("Title");
+            //Invoke("SceneLoad", 3);
+            //SceneLoad();
+        }
+
+        public void SceneLoad()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+            //Application.LoadLevel("Title");
+
+            //Application.LoadLevel("_Complete-Game");
+
+            //Application.UnloadLevel("_Complete-Game");
+            //Resources.UnloadUnusedAssets();
+
+            //Application.LoadLevelAdditive("_Complete-Game");
+
+            //InitGame();
+
+            //SceneManager.LoadScene("Title"); //SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single
         }
 
         //コルーチンは順番に敵を動かす。

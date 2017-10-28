@@ -43,6 +43,7 @@ namespace Completed
             //animatorの取得
             animator = GetComponent<Animator>();;
 
+
             //レベル間でGameManager.instanceに保存されている現在の食品ポイント合計を取得します。
             food = GameManager.instance.playerFoodPoints;
             experiencePoint = GameManager.instance.playerExperiencePoint;
@@ -257,6 +258,7 @@ namespace Completed
             //ロードされた最後のシーン、この場合Mainをゲームの唯一のシーンにロードします。 
             //また、 "Single"モードでロードして、既存のシーンオブジェクトを置き換え、現在のシーン内のすべてのシーンオブジェクトをロードしないようにします。
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+            //Application.LoadLevel("_Complete-Game");
         }
 
 
@@ -291,7 +293,7 @@ namespace Completed
                 SoundManager.instance.musicSource.Stop();
 
                 //GameManagerのGameOver関数を呼び出します。
-                GameManager.instance.GameOver();        
+                GameManager.instance.GameOver();
             }
         }
 
@@ -311,7 +313,6 @@ namespace Completed
             experiencePoint = (experiencePoint - levelUpPoint);
             protection = (int)Mathf.Log(playerLevel, 2f);
 
-            playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
             playerLevelText.text = "Level:" + playerLevel + " ex:" + experiencePoint;
         }
 

@@ -185,27 +185,6 @@ namespace Completed
 
             isContinue = true;
             continueButton.transform.localScale += new Vector3(1, 1, 1);
-
-            //Application.LoadLevel("Title");
-            //Invoke("SceneLoad", 3);
-            //SceneLoad();
-        }
-
-        public void SceneLoad()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-            //Application.LoadLevel("Title");
-
-            //Application.LoadLevel("_Complete-Game");
-
-            //Application.UnloadLevel("_Complete-Game");
-            //Resources.UnloadUnusedAssets();
-
-            //Application.LoadLevelAdditive("_Complete-Game");
-
-            //InitGame();
-
-            //SceneManager.LoadScene("Title"); //SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single
         }
 
         //コルーチンは順番に敵を動かす。

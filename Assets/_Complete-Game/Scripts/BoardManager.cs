@@ -28,7 +28,7 @@ namespace Completed
         public int maxint = 5;                                          //乱数の最大値
         public Count wallCount = new Count(5, 9);                       //1レベルあたりの乱数の乱数の上限と下限。
         public Count foodCount = new Count(1, 5);                       //1レベルあたりの食品の乱数の上限と下限。
-        public GameObject[] exit;                                       //exitプレハブ
+        public GameObject exit;                                       //exitプレハブ
         public GameObject[] floorTiles;                                 //床プレハブの配列。
         public GameObject[] wallTiles;                                  //壁プレハブの配列。
         public GameObject[] foodTiles;                                  //foodプレハブの配列。
@@ -99,20 +99,15 @@ namespace Completed
             }
         }
 
-
-        //RandomPosition returns a random position from our list gridPositions.
         //RandomPositionは、リストgridPositionsからランダムな位置を返します。
         Vector3 RandomPosition()
         {
-            //Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
             //整数randomIndexを宣言し、リストのgridPositions内のアイテムの数と0の間の乱数に値を設定します。
             int randomIndex = Random.Range(0, gridPositions.Count);
 
-            //Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from our List gridPositions.
             //randomPositionというVector3型の変数を宣言し、ListのgridPositionsからrandomIndexのエントリにその値を設定します。
             Vector3 randomPosition = gridPositions[randomIndex];
 
-            //Remove the entry at randomIndex from the list so that it can't be re-used.
             //randomIndexのエントリをリストから削除して、再利用できないようにします。
             gridPositions.RemoveAt(randomIndex);
 
@@ -137,6 +132,7 @@ namespace Completed
 
                 //ローテーションを変更せずにRandomPositionから返された位置でtileChoiceをインスタンス化します。
                 Instantiate(tileChoice, randomPosition, Quaternion.identity);
+                Debug.Log(tileChoice + " " + objectCount);
             }
         }
 
@@ -158,7 +154,9 @@ namespace Completed
             //私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
 
-            LayoutObjectAtRandom(exit, 1, 1);
+            //LayoutObjectAtRandom(exit, 1, 1);
+            Vector3 randomPosition = RandomPosition(); 
+            Instantiate(exit, randomPosition, Quaternion.identity);
 
             //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
@@ -185,10 +183,9 @@ namespace Completed
         }
 
 
-        public void SetupLastScene(int level) {
-
-            Debug.Log("last");
-            int lastStage = 10;
+        public void SetupLastScene(int level) 
+        {
+            int lastStage = 2;
             columns = start;
             rows = start;
             columns *= lastStage;
@@ -200,7 +197,9 @@ namespace Completed
             //私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
 
-            LayoutObjectAtRandom(exit, 1, 1);
+            //LayoutObjectAtRandom(exit, 1, 1);
+            Vector3 randomPosition = RandomPosition();
+            Instantiate(exit, randomPosition, Quaternion.identity);
 
             //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
@@ -223,7 +222,6 @@ namespace Completed
                     LayoutObjectAtRandom(bossTiles, 1, 2);
                 }
             }
-
         }
 
 

@@ -10,8 +10,7 @@ namespace Completed
     //GameManager
     public class GameManager : MonoBehaviour
     {
-        
-
+        public int clearLevel = 2;
         public float levelStartDelay = 2f;                      //レベル開始前の待機時間
         public float turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
         public int playerFoodPoints = 20;                     //プレーヤのゲーム開始時のfood points
@@ -82,8 +81,6 @@ namespace Completed
             }
             if (instance.isContinue)
             {
-                Debug.Log(instance.isContinue);
-
                 instance.level = 1;
                 instance.levelStartDelay = 2f;                      //レベル開始前の待機時間
                 instance.turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
@@ -129,9 +126,8 @@ namespace Completed
             enemies.Clear();
 
             //BoardManagerスクリプトのSetupScene関数を呼び出し、現在のレベル番号を渡します。
-            if (level < 2)
+            if (level < clearLevel)
             {
-                Debug.Log("setup");
                 boardScript.SetupScene(level);
             }
             else boardScript.SetupLastScene(level);
@@ -204,33 +200,28 @@ namespace Completed
         //コルーチンは順番に敵を動かす。
         IEnumerator MoveEnemies()
         {
-            //enemiesMovingが真のプレイヤーは移動できませんが、移動することはできません。
+            //enemiesMovingがtrueの時プレイヤーは移動できません
             enemiesMoving = true;
 
             //turnDelay秒待機します。デフォルトは0.1（100 ms）です。
             yield return new WaitForSeconds(turnDelay);
-
-            //敵が生まれていない場合（IE in first level)(第1レベルのIE）：
-            if (enemies.Count == 0)
-            {
-                //移動間のターン遅延秒間待機し、敵が移動していない場合に移動する遅延を置き換えます。
-                yield return new WaitForSeconds(turnDelay);
-            }
 
             //Enemyオブジェクトのリストをループします。
             for (int i = 0; i < enemies.Count; i++)
             {
                 //敵リストのインデックスiの敵のMoveEnemy関数を呼び出します。
                 enemies[i].MoveEnemy();
-
-                //次の敵に移動する前に敵のmoveTimeを待ちます。
-                yield return new WaitForSeconds(enemies[i].moveTime);
             }
+
+            yield return new WaitForSeconds(turnDelay);
+
             //敵が移動したら、playersTurnをtrueに設定してプレーヤーが移動できるようにします。
             playersTurn = true;
 
             //敵は動かされ、敵は偽に変わる。
             enemiesMoving = false;
+
+
 
         }
     }

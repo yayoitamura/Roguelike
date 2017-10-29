@@ -207,15 +207,20 @@ namespace Completed
 
         //OnTriggerEnter2Dは、別のオブジェクトがこのオブジェクトに接続されたトリガーコライダーに入ると送信されます（2D物理のみ）。
         private void OnTriggerEnter2D(Collider2D other)
-        {
+        {            
             //衝突したトリガーのタグがExitかどうかを確認してください。
             if (other.tag == "Exit")
             {
-                //restartLevelDelayの遅延（デフォルトは1秒）で次のレベルを開始するには、Restart関数を呼び出します。
-                Invoke("Restart", restartLevelDelay);
+                if (GameManager.instance.level < GameManager.instance.clearLevel)
+                {
+                    //restartLevelDelayの遅延（デフォルトは1秒）で次のレベルを開始するには、Restart関数を呼び出します。
+                    Invoke("Restart", restartLevelDelay);
 
-                //Disable the player object since level is over.
-                enabled = false;
+                    //Disable the player object since level is over.
+                    enabled = false;
+                }
+
+                else GameManager.instance.GameClear();
             }
 
             //衝突したトリガーのタグがFoodかどうかを確認します。

@@ -65,12 +65,15 @@ namespace Completed
             int yDir = 0;
 
             //位置の差がほぼゼロ（ε）の場合は、次のようにします。
+
             if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
-                
+            {
                 //ターゲットの（プレイヤー）位置のy座標がこの敵の位置のy座標よりも大きい場合（上に移動するには）y方向1に設定します。 そうでない場合は - 1に設定します（下に移動するには）。
                 yDir = target.position.y > transform.position.y ? 1 : -1;
+            }
 
             //if (target.position.y > transform.position.y){
+
             //    yDir = 1;
             //}else{
             //    yDir = -1;
@@ -78,28 +81,38 @@ namespace Completed
 
             //位置の違いがほぼゼロ（ε）でない場合は、次の操作を行います。
             else
+            {
                 //ターゲットxの位置が敵のxの位置よりも大きいかどうかを確認します。x方向を - 1に設定する場合は右に移動し、-1に設定しない場合は左に移動します。
                 xDir = target.position.x > transform.position.x ? 1 : -1;
+            }
 
             //Attememove関数を呼び出し、汎用パラメータPlayerを渡します。これは、敵が移動している可能性があり、Playerに遭遇する可能性があるためです
-            AttemptMove<Player>(xDir, yDir);
+            AttemptMove<MonoBehaviour>(xDir, yDir);
         }
 
         //OnCantMoveは、EnemyがPlayerが占めるスペースに移動しようとすると呼び出され、
         //MovingObjectのOnCantMove関数をオーバーライドし、遭遇すると予想されるコンポーネント（この場合Player）を渡すために使用するジェネリックパラメータTをとります
         protected override void OnCantMove<T>(T component) //Playerへのダメージ
         {
-            //hitPlayerを宣言し、遭遇したコンポーネントと等しくなるように設定します
-            Player hitPlayer = component as Player;
+            if (component.tag == "Player")
+            {
+                //hitPlayerを宣言し、遭遇したコンポーネントと等しくなるように設定します
+                Player hitPlayer = component as Player;
 
-            //hitPlayerのLoseFood関数を呼び出し、playerDamageを渡す
-            hitPlayer.LoseFood(playerDamage);
+                //hitPlayerのLoseFood関数を呼び出し、playerDamageを渡す
+                hitPlayer.LoseFood(playerDamage);
 
-            //エネミーの攻撃アニメーションのトリガー
-            animator.SetTrigger("enemyAttack");
+                //エネミーの攻撃アニメーションのトリガー
+                animator.SetTrigger("enemyAttack");
 
-            //SoundManagerのRandomizeSfx関数を呼び出し、ランダムに再生
-            SoundManager.instance.RandomizeSfx(attackSound1, attackSound2);
+                //SoundManagerのRandomizeSfx関数を呼び出し、ランダムに再生
+                SoundManager.instance.RandomizeSfx(attackSound1, attackSound2);
+            }
+            else if (component.tag == "Enemy")
+            {
+                
+            }
+
         }
 
         public void DamageEnemy(int loss)

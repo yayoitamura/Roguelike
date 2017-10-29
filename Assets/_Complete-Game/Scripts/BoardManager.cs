@@ -118,8 +118,12 @@ namespace Completed
         //LayoutObjectAtRandomは、作成するオブジェクトの数の最小範囲と最大範囲から選択するゲームオブジェクトの配列を受け入れます。
         void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
         {
+            int objectCount = 10;
+            if(GameManager.instance.level < 2)
+            {
             //最小値と最大値の範囲内でインスタンス化するオブジェクトの乱数を選択する
-            int objectCount = Random.Range(minimum, maximum + 1);
+            objectCount = Random.Range(minimum, maximum + 1);
+            }
 
             //無作為に選択されたlimitCountに達するまでオブジェクトをインスタンス化する
             for (int i = 0; i < objectCount; i++)
@@ -132,7 +136,6 @@ namespace Completed
 
                 //ローテーションを変更せずにRandomPositionから返された位置でtileChoiceをインスタンス化します。
                 Instantiate(tileChoice, randomPosition, Quaternion.identity);
-                Debug.Log(tileChoice + " " + objectCount);
             }
         }
 

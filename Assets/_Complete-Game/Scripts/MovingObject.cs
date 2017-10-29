@@ -51,6 +51,7 @@ namespace Completed
             //何かヒットしたかどうかを確認する
             if (hit.transform == null)
             {
+                Debug.Log(hit);
                 //何もヒットしなかった場合は、SmoothMovementのコルーチンをVector2の終点に目的地として渡します
                 StartCoroutine(SmoothMovement(end));
 
@@ -104,7 +105,8 @@ namespace Completed
 
             //ヒットしたオブジェクトに接続されているT型のコンポーネントへのコンポーネント参照を取得します。
             T hitComponent = hit.transform.GetComponent<T>();
-
+            Debug.Log(canMove);
+            Debug.Log(hitComponent);
             //canMoveがfalseでhitComponentがnullでない場合は、MovingObjectがブロックされ、相互作用できるものがヒットしたことを意味します。
             if (!canMove && hitComponent != null)
 

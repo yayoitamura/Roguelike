@@ -78,10 +78,7 @@ namespace Completed
         {
             if (scene.name == "_Complete-Game")
             {
-                Debug.Log(instance.level + " scene loaded");
-
                 instance.level++;
-                //instance.InitGame();
             }
             if (instance.isContinue)
             {
@@ -132,7 +129,12 @@ namespace Completed
             enemies.Clear();
 
             //BoardManagerスクリプトのSetupScene関数を呼び出し、現在のレベル番号を渡します。
-            boardScript.SetupScene(level);
+            if (level < 2)
+            {
+                Debug.Log("setup");
+                boardScript.SetupScene(level);
+            }
+            else boardScript.SetupLastScene(level);
 
         }
 
@@ -149,9 +151,6 @@ namespace Completed
 
         void Update()
         {
-            //Debug.Log("playersTurn " + playersTurn);
-            //Debug.Log("enemiesMoving " + enemiesMoving);
-            //Debug.Log("doingSetup " + doingSetup);
             //プレイヤーがターンまたは敵であることを確認してください。
             if (playersTurn || enemiesMoving || doingSetup)
             {
@@ -176,6 +175,21 @@ namespace Completed
         {
             //GameOver時のMessage
             levelText.text = "Game Over " + level + " days";
+
+            //黒の背景画像gameObjectを有効にする。
+            levelImage.SetActive(true);
+
+            //Disable this GameManager.このGameManager無効にする
+            enabled = false;
+
+            isContinue = true;
+            continueButton.transform.localScale += new Vector3(1, 1, 1);
+        }
+
+        public void GameClear()
+        {
+            Debug.Log("clear");
+            levelText.text = "Game Clear";
 
             //黒の背景画像gameObjectを有効にする。
             levelImage.SetActive(true);

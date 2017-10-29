@@ -146,8 +146,8 @@ namespace Completed
         public void SetupScene(int level)
         {
             //面積をランダム
-            //columns = start;
-            //rows = start;
+            columns = start;
+            rows = start;
             //int r = new System.Random().Next(minint, maxint);
             //columns *= r;
             //rows *= r;
@@ -183,5 +183,49 @@ namespace Completed
             }
 
         }
+
+
+        public void SetupLastScene(int level) {
+
+            Debug.Log("last");
+            int lastStage = 10;
+            columns = start;
+            rows = start;
+            columns *= lastStage;
+            rows *= lastStage;
+
+            //外壁と床を作成
+            BoardSetup();
+
+            //私たちのグリッドポジションのリストをリセットします。
+            InitialiseList();
+
+            LayoutObjectAtRandom(exit, 1, 1);
+
+            //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
+            LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
+
+            //無作為化された位置で最小値と最大値に基づいて無作為数の食品タイルをインスタンス化します。
+            LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
+
+            //対数プログレッションに基づいて、現在のレベル番号に基づいて敵の数を決定する
+            //Mathf.Log 指定した底で指定した数の対数を返します
+            int enemyCount = (int)Mathf.Log(level, 2f);
+
+            //無作為の位置で最小値と最大値に基づいてランダムな数の敵をインスタンス化します。
+            LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+
+            if (GameManager.instance.level % 5 == 0)
+            {
+                LayoutObjectAtRandom(enemyExTiles, 1, 3);
+                if (GameManager.instance.level % 10 == 0)
+                {
+                    LayoutObjectAtRandom(bossTiles, 1, 2);
+                }
+            }
+
+        }
+
+
     }
 }

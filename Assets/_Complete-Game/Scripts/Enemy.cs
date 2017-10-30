@@ -117,6 +117,7 @@ namespace Completed
 
         public void DamageEnemy(int loss)
         {
+            animator.SetTrigger("enemyDamage");
             hp -= loss;
             if (hp <= 0)
             {

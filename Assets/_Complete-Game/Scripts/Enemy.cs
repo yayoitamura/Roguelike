@@ -40,6 +40,19 @@ namespace Completed
         //AttemptMoveの基底関数がどのように機能するかについては、MovingObjectのコメントを参照してください。
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
+            //反転処理
+            Vector2 inversion = gameObject.transform.localScale;
+            if (xDir != 0 || yDir == 0)
+            {
+                if ((xDir > -1 && inversion.x > -1) || (xDir <= -1 && inversion.x <= -1))
+                {
+                    //localScale.xに-1をかける
+                    inversion.x *= -1;
+                    //結果を戻す
+                    gameObject.transform.localScale = inversion;
+                }
+            }
+
             //skipMoveがtrueであるかどうかをチェックし、falseに設定してこのターンをスキップする。
             if (skipMove)
             {
@@ -72,8 +85,7 @@ namespace Completed
                 yDir = target.position.y > transform.position.y ? 1 : -1;
             }
 
-            //if (target.position.y > transform.position.y){
-
+            // => if (target.position.y > transform.position.y){
             //    yDir = 1;
             //}else{
             //    yDir = -1;

@@ -148,6 +148,19 @@ namespace Completed
         //AttemptMoveは、基底クラスのAttemptMove関数をオーバーライドします。MovingObject AttemptMoveは、PlayerがWall型のジェネリックパラメータTをとります.x方向とy方向の整数も移動します。
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
+            //反転処理
+            Vector2 inversion = gameObject.transform.localScale;
+            if (xDir != 0 || yDir == 0)
+            {
+                if ((xDir <= -1 && inversion.x > -1) || (xDir > -1 && inversion.x <= -1))
+                {
+                    //localScale.xに-1をかける
+                    inversion.x *= -1;
+                    //結果を戻す
+                    gameObject.transform.localScale = inversion;
+                }
+            }
+
             //プレイヤーが移動するたびに、合計食糧ポイントを引く。
             food--;
 

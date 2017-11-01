@@ -53,7 +53,6 @@ namespace Completed
             {
                 //何もヒットしなかった場合は、SmoothMovementのコルーチンをVector2の終点に目的地として渡します
                 StartCoroutine(SmoothMovement(end));
-
                 //Moveが成功したと言うと真
                 return true;
             }
@@ -105,10 +104,21 @@ namespace Completed
             //ヒットしたオブジェクトに接続されているT型のコンポーネントへのコンポーネント参照を取得します。
             T hitComponent = hit.transform.GetComponent<T>();
             //canMoveがfalseでhitComponentがnullでない場合は、MovingObjectがブロックされ、相互作用できるものがヒットしたことを意味します。
-            if (!canMove && hitComponent != null)
-
+            if (!canMove && hitComponent != null){
                 //OnCantMove関数を呼び出して、hitComponentをパラメータとして渡します。
                 OnCantMove(hitComponent);
+            }
+            else
+            {
+                //ヒットは、我々が移動で行なわれたラインキャストの結果を参照することを可能にする。
+                Move(xDir, yDir, out hit);
+
+                //Moveがtrueを返す場合、Playerは空の領域に移動できたことを意味します。
+
+                    //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
+                    //SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
+                
+            }
         }
 
         //抽象修飾子は、変更されるものが欠落しているか不完全な実装であることを示します。

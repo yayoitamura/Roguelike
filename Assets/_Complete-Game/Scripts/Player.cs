@@ -171,15 +171,15 @@ namespace Completed
             //基本クラスのAttemptMoveメソッドを呼び出し、コンポーネントT（この場合はWall）とx方向とy方向を移動して渡します。
             base.AttemptMove<T>(xDir, yDir);
 
-            //ヒットは、我々が移動で行なわれたラインキャストの結果を参照することを可能にする。
-            RaycastHit2D hit;
+            ////ヒットは、我々が移動で行なわれたラインキャストの結果を参照することを可能にする。
+            //RaycastHit2D hit;
 
-            //Moveがtrueを返す場合、Playerは空の領域に移動できたことを意味します。
-            if (Move(xDir, yDir, out hit))
-            {
-                //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
-                SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
-            }
+            ////Moveがtrueを返す場合、Playerは空の領域に移動できたことを意味します。
+            //if (Move(xDir, yDir, out hit))
+            //{
+            //    //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
+            //    SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
+            //}
 
             //プレイヤーは移動して食糧を失ったので、ゲームが終了したかどうかを確認します。
             CheckIfGameOver();

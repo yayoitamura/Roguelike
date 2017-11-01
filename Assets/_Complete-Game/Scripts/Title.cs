@@ -9,7 +9,6 @@ namespace Completed
 
         public void SceneLoad()
         {
-            Debug.Log("SceneLoad");
             GameManager.instance.continueButton.transform.localScale += new Vector3(0, 0, 0);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
             gameObject.SetActive(false);

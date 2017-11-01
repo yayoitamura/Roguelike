@@ -157,6 +157,10 @@ namespace Completed
             //私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
 
+            //playerの位置をランダムに
+            GameObject player = GameObject.Find("Player");
+            player.transform.position = RandomPosition();
+
             //LayoutObjectAtRandom(exit, 1, 1);
             Vector3 randomPosition = RandomPosition(); 
             Instantiate(exit, randomPosition, Quaternion.identity);
@@ -183,9 +187,6 @@ namespace Completed
                 }
             }
 
-            GameObject player = GameObject.Find("Player");
-            player.transform.position = RandomPosition();
-
         }
 
 
@@ -202,6 +203,10 @@ namespace Completed
 
             //私たちのグリッドポジションのリストをリセットします。
             InitialiseList();
+
+            //playerの位置をランダムに
+            GameObject player = GameObject.Find("Player");
+            player.transform.position = RandomPosition();
 
             //LayoutObjectAtRandom(exit, 1, 1);
             Vector3 randomPosition = RandomPosition();

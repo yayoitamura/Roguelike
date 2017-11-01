@@ -22,6 +22,7 @@ namespace Completed
         public AudioClip drinkSound1;               //soda収集時のAudio clips１
         public AudioClip drinkSound2;               //soda収集時のAudio clips２
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
+        public GameObject bm;
 
         private Animator animator;                  //animator componentを取得
         private int food;                           //foodの合計point
@@ -39,7 +40,7 @@ namespace Completed
 
         //MovingObjectにオーバーライドする
         protected override void Start()
-        {
+        {                
             //animatorの取得
             animator = GetComponent<Animator>();;
 

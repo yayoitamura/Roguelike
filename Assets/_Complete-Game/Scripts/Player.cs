@@ -17,12 +17,12 @@ namespace Completed
         public Text playerLevelText;
         public AudioClip moveSound1;                //Playerが動く時のAudio clips１
         public AudioClip moveSound2;                //Playerが動く時のAudio clips２
+        public AudioClip exitSound;
         public AudioClip eatSound1;                 //food収集時のAudio clips１
         public AudioClip eatSound2;                 //food収集時のAudio clips２
         public AudioClip drinkSound1;               //soda収集時のAudio clips１
         public AudioClip drinkSound2;               //soda収集時のAudio clips２
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
-        public GameObject bm;
 
         private Animator animator;                  //animator componentを取得
         private int food;                           //foodの合計point
@@ -149,6 +149,8 @@ namespace Completed
         //AttemptMoveは、基底クラスのAttemptMove関数をオーバーライドします。MovingObject AttemptMoveは、PlayerがWall型のジェネリックパラメータTをとります.x方向とy方向の整数も移動します。
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
+            base.canMoving = true;
+
             //反転処理
             Vector2 inversion = gameObject.transform.localScale;
             if (xDir != 0 || yDir == 0)
@@ -171,15 +173,11 @@ namespace Completed
             //基本クラスのAttemptMoveメソッドを呼び出し、コンポーネントT（この場合はWall）とx方向とy方向を移動して渡します。
             base.AttemptMove<T>(xDir, yDir);
 
-            ////ヒットは、我々が移動で行なわれたラインキャストの結果を参照することを可能にする。
-            //RaycastHit2D hit;
-
-            ////Moveがtrueを返す場合、Playerは空の領域に移動できたことを意味します。
-            //if (Move(xDir, yDir, out hit))
-            //{
-            //    //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
-            //    SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
-            //}
+            if (base.canMoving)
+            {
+                //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
+                SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
+            }
 
             //プレイヤーは移動して食糧を失ったので、ゲームが終了したかどうかを確認します。
             CheckIfGameOver();
@@ -225,16 +223,13 @@ namespace Completed
             //衝突したトリガーのタグがExitかどうかを確認してください。
             if (other.tag == "Exit")
             {
-                if (GameManager.instance.level < GameManager.instance.clearLevel)
-                {
-                    //restartLevelDelayの遅延（デフォルトは1秒）で次のレベルを開始するには、Restart関数を呼び出します。
-                    Invoke("Restart", restartLevelDelay);
+                //restartLevelDelayの遅延（デフォルトは1秒）で次のレベルを開始するには、Restart関数を呼び出します。
+                Invoke("Restart", restartLevelDelay);
 
-                    //Disable the player object since level is over.
-                    enabled = false;
-                }
+                SoundManager.instance.RandomizeSfx(exitSound);
 
-                else GameManager.instance.GameClear();
+                //Disable the player object since level is over.
+                enabled = false;
             }
 
             //衝突したトリガーのタグがFoodかどうかを確認します。
@@ -274,10 +269,16 @@ namespace Completed
         //再起動すると、呼び出されるとシーンがリロードされます。
         private void Restart()
         {
-            //ロードされた最後のシーン、この場合Mainをゲームの唯一のシーンにロードします。 
-            //また、 "Single"モードでロードして、既存のシーンオブジェクトを置き換え、現在のシーン内のすべてのシーンオブジェクトをロードしないようにします。
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-            //Application.LoadLevel("_Complete-Game");
+            if (GameManager.instance.level > GameManager.instance.clearLevel)
+            {
+                GameManager.instance.GameClear();
+            }
+            else
+            {
+                //ロードされた最後のシーン、この場合Mainをゲームの唯一のシーンにロードします。 
+                //また、 "Single"モードでロードして、既存のシーンオブジェクトを置き換え、現在のシーン内のすべてのシーンオブジェクトをロードしないようにします。
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+            }
         }
 
 

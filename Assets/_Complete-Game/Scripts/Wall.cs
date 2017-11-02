@@ -42,7 +42,6 @@ namespace Completed
             }
 
             //壁を壊すとアイテム
-            //壁が壊れるのとアイテム出現、取得が同時なので修正
             if (!gameObject.activeSelf)
             {
                 GameObject randumItem = items[Random.Range(0, items.Length)];

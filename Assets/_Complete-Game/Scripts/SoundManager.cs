@@ -8,7 +8,8 @@ namespace Completed
 	{
 		public AudioSource efxSource;					//エフェクトaudio source の参照 //場面場面で効果音を入れ変える
 		public AudioSource musicSource;					//music audio source の参照
-		public static SoundManager instance = null;		//staticにすることでシーンが変わっても変数は保持され、他のスクリプトがSoundManagerから関数を呼び出せる				
+        public AudioClip lastStage;
+        public static SoundManager instance = null;		//staticにすることでシーンが変わっても変数は保持され、他のスクリプトがSoundManagerから関数を呼び出せる				
 		public float lowPitchRange = .95f;              //乱数で生成されるピッチの最低値
 		public float highPitchRange = 1.05f;            //乱数で生成されるピッチの最高値
 

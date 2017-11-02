@@ -192,6 +192,11 @@ namespace Completed
 
         public void SetupLastScene(int level) 
         {
+            SoundManager.instance.musicSource.clip = SoundManager.instance.lastStage;
+            //clipの再生
+            //SoundManager.instance.musicSource.volume = 1;
+            SoundManager.instance.musicSource.Play();
+
             int lastStage = 1;
             columns = start;
             rows = start;

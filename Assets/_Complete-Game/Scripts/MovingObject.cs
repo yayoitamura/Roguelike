@@ -9,7 +9,7 @@ namespace Completed
     {
         public float moveTime = 0.1f;           //移動するまでの時間
         public LayerMask blockingLayer;         //衝突がチェックされるレイヤー。
-
+        public bool canMoving;
 
         private BoxCollider2D boxCollider;      //このオブジェクトに添付されたBoxCollider2Dコンポーネント。
         private Rigidbody2D rb2D;               //このオブジェクトに付けられたRigidbody2Dコンポーネント。
@@ -103,21 +103,12 @@ namespace Completed
 
             //ヒットしたオブジェクトに接続されているT型のコンポーネントへのコンポーネント参照を取得します。
             T hitComponent = hit.transform.GetComponent<T>();
+
             //canMoveがfalseでhitComponentがnullでない場合は、MovingObjectがブロックされ、相互作用できるものがヒットしたことを意味します。
             if (!canMove && hitComponent != null){
                 //OnCantMove関数を呼び出して、hitComponentをパラメータとして渡します。
                 OnCantMove(hitComponent);
-            }
-            else
-            {
-                //ヒットは、我々が移動で行なわれたラインキャストの結果を参照することを可能にする。
-                Move(xDir, yDir, out hit);
-
-                //Moveがtrueを返す場合、Playerは空の領域に移動できたことを意味します。
-
-                    //SoundManagerのRandomizeSfxを呼び出して、2つのオーディオクリップを渡して移動音を再生します。
-                    //SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
-                
+                canMoving = false;
             }
         }
 

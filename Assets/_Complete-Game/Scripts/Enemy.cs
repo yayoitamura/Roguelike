@@ -8,6 +8,7 @@ namespace Completed
     public class Enemy : MovingObject
     {
         public int playerDamage;                            //Playerへのダメージ
+        public AudioClip chopSound1;                        //壁がPlayeに攻撃された時のオーディオクリッップ
         public AudioClip attackSound1;                      //Playeを攻撃する時のオーディオクリッップ１
         public AudioClip attackSound2;                      //Playeを攻撃する時のオーディオクリッップ２
         public int hp;
@@ -129,6 +130,8 @@ namespace Completed
 
         public void DamageEnemy(int loss)
         {
+            SoundManager.instance.RandomizeSfx(chopSound1);
+
             animator.SetTrigger("enemyDamage");
             hp -= loss;
             if (hp <= 0)

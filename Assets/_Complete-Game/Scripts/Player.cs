@@ -226,7 +226,9 @@ namespace Completed
                 //restartLevelDelayの遅延（デフォルトは1秒）で次のレベルを開始するには、Restart関数を呼び出します。
                 Invoke("Restart", restartLevelDelay);
 
-                SoundManager.instance.RandomizeSfx(exitSound);
+                //SoundManager.instance.RandomizeSfx(exitSound);
+                SoundManager.instance.efxSource.clip = exitSound;
+                SoundManager.instance.efxSource.Play();
 
                 //Disable the player object since level is over.
                 enabled = false;
@@ -269,7 +271,7 @@ namespace Completed
         //再起動すると、呼び出されるとシーンがリロードされます。
         private void Restart()
         {
-            if (GameManager.instance.level > GameManager.instance.clearLevel)
+            if (GameManager.instance.level >= GameManager.instance.clearLevel)
             {
                 GameManager.instance.GameClear();
             }

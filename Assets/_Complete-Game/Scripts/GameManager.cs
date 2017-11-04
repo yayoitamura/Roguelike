@@ -10,7 +10,7 @@ namespace Completed
     //GameManager
     public class GameManager : MonoBehaviour
     {
-        public int clearLevel = 2;
+        public int clearLevel = 20;
         public float levelStartDelay = 2f;                      //レベル開始前の待機時間
         public float turnDelay = 0.1f;                          //各プレイヤーのターンの間のディレイ。
         public int playerFoodPoints = 20;                     //プレーヤのゲーム開始時のfood points
@@ -25,7 +25,9 @@ namespace Completed
 
 
         private Text levelText;                                 //現在のレベル番号を表示するテキスト。
+        private Text buttonText;
         private GameObject levelImage;                          //レベルが設定されているのでレベルをブロックする画像、levelTextの背景。
+        private Image image;
         private BoardManager boardScript;                       //レベルを設定するBoardManagerへの参照を保存する
         [System.NonSerialized] public int level = 1;            //現在のレベル番号
         private List<Enemy> enemies;                            //移動コマンドを発行するために使用されるすべての敵ユニットのリスト。
@@ -106,12 +108,14 @@ namespace Completed
 
             //私たちの画像LevelImageへの参照を名前で見つけてください。
             levelImage = GameObject.Find("LevelImage");
+            image = GameObject.Find("LevelImage").GetComponent<Image>();
 
             //LevelTextのテキストコンポーネントへの参照を、名前で検索してGetComponentを呼び出すことで取得します。
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 
             //continueButtonの取得と非表示
             continueButton = GameObject.Find("ContinueButton");
+            buttonText = GameObject.Find("Continue").GetComponent<Text>();
 
             //levelTextのテキストを文字列「Day」に設定し、現在のレベル番号を追加します。
             levelText.text = "Day " + level;
@@ -184,7 +188,8 @@ namespace Completed
 
         public void GameClear()
         {
-            Debug.Log("clear");
+            image.color = Color.white;
+            levelText.color = Color.black;
             levelText.text = "Game Clear";
 
             //黒の背景画像gameObjectを有効にする。
@@ -194,6 +199,7 @@ namespace Completed
             enabled = false;
 
             isContinue = true;
+            buttonText.text = "RETRY";
             continueButton.transform.localScale += new Vector3(1, 1, 1);
         }
 

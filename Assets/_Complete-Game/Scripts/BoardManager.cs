@@ -25,10 +25,11 @@ namespace Completed
             }
         }
         public int minint = 1;                                          //乱数の最小値
-        public int maxint = 5;                                          //乱数の最大値
+        public int maxint = 6;                                          //乱数の最大値
         public Count wallCount = new Count(5, 9);                       //1レベルあたりの乱数の乱数の上限と下限。
         public Count foodCount = new Count(1, 5);                       //1レベルあたりの食品の乱数の上限と下限。
         public GameObject exit;                                       //exitプレハブ
+        public GameObject clearexit;
         public GameObject[] floorTiles;                                 //床プレハブの配列。
         public GameObject[] wallTiles;                                  //壁プレハブの配列。
         public GameObject[] foodTiles;                                  //foodプレハブの配列。
@@ -118,8 +119,8 @@ namespace Completed
         //LayoutObjectAtRandomは、作成するオブジェクトの数の最小範囲と最大範囲から選択するゲームオブジェクトの配列を受け入れます。
         void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
         {
-            int objectCount = 1;
-            if(GameManager.instance.level < 2)
+            int objectCount = 101;
+            if(GameManager.instance.level < 20)
             {
             //最小値と最大値の範囲内でインスタンス化するオブジェクトの乱数を選択する
             objectCount = Random.Range(minimum, maximum + 1);
@@ -147,9 +148,9 @@ namespace Completed
             //面積をランダム
             columns = start;
             rows = start;
-            //int r = new System.Random().Next(minint, maxint);
-            //columns *= r;
-            //rows *= r;
+            int r = new System.Random().Next(minint, maxint);
+            columns *= r;
+            rows *= r;
 
             //外壁と床を作成
             BoardSetup();
@@ -166,10 +167,10 @@ namespace Completed
             Instantiate(exit, randomPosition, Quaternion.identity);
 
             //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
-            LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
+            LayoutObjectAtRandom(wallTiles, wallCount.minimum*r, wallCount.maximum*r);
 
             //無作為化された位置で最小値と最大値に基づいて無作為数の食品タイルをインスタンス化します。
-            LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
+            LayoutObjectAtRandom(foodTiles, foodCount.minimum*r, foodCount.maximum*r);
 
             //対数プログレッションに基づいて、現在のレベル番号に基づいて敵の数を決定する
             //Mathf.Log 指定した底で指定した数の対数を返します
@@ -180,10 +181,10 @@ namespace Completed
 
             if(GameManager.instance.level % 5 == 0)
             {
-                LayoutObjectAtRandom(enemyExTiles, 1, 3);
+                LayoutObjectAtRandom(enemyExTiles, 1* r, 3* r);
                 if (GameManager.instance.level % 10 == 0)
                 {
-                    LayoutObjectAtRandom(bossTiles, 1, 2);
+                    LayoutObjectAtRandom(bossTiles, 1* r, 2* r);
                 }
             }
 
@@ -196,7 +197,7 @@ namespace Completed
             //SoundManager.instance.musicSource.volume = -40;
             SoundManager.instance.musicSource.Play();
 
-            int lastStage = 1;
+            int lastStage = 10;
             columns = start;
             rows = start;
             columns *= lastStage;
@@ -212,9 +213,8 @@ namespace Completed
             GameObject player = GameObject.Find("Player");
             player.transform.position = RandomPosition();
 
-            //LayoutObjectAtRandom(exit, 1, 1);
             Vector3 randomPosition = RandomPosition();
-            Instantiate(exit, randomPosition, Quaternion.identity);
+            Instantiate(clearexit, randomPosition, Quaternion.identity);
 
             //無作為の位置で最小値と最大値に基づいて壁タイルの乱数をインスタンス化します。
             LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);

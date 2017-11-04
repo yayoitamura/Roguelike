@@ -12,7 +12,7 @@ namespace Completed
         public float restartLevelDelay = 1f;        //Levelごとの再開の遅延時間
         public int pointsPerFood = 10;              //Foodから得るポイント
         public int pointsPerSoda = 20;              //Sodaから得るポイント
-        public int wallDamage = 1;                  //プレイヤーが壁に与えるダメージ。
+        public int wallDamage = 1;                  //プレイヤー与えるダメージ。
         public Text foodText;                       //UI Text to display current player food total.
         public Text playerLevelText;
         public AudioClip moveSound1;                //Playerが動く時のAudio clips１
@@ -213,6 +213,15 @@ namespace Completed
 
                 //プレイヤーの攻撃アニメーションを再生するために、プレイヤーのアニメーションコントローラーの攻撃トリガーを設定します。
                 animator.SetTrigger("playerChop");
+            }
+            else if (component.tag == "Exit")
+            {
+                //引数のcomponentをhitEnemyに代入
+                ClearExit clearExit = component as ClearExit;
+
+                //DamageEnemy機能を呼び出します。
+                clearExit.ExitClear();
+
             }
         }
 
